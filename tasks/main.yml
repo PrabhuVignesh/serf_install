@@ -1,0 +1,21 @@
+---
+- name: Downloading serf binary from official repo.
+  get_url: url={{ serf_binary_link }} dest=/tmp/serf.zip
+
+- name: extract to /usr/local/bin/.
+  unarchive:
+    copy: no
+    src: /tmp/serf.zip
+    dest: /usr/local/bin/
+    owner: root
+    group: root
+
+- name: Copying Events file to {{ inventory_hostname }}
+  copy: src=files/event.sh dest=/tmp/
+
+- name: Run serf agent {{ inventory_hostname }}
+  command: serf agent -log-level=debug -event-handler=/tmp/event.sh
+  async: 1
+
+- name: Join a cluster to agent {{ inventory_hostname }}
+  command: serf join {{ inventory_hostname }}
