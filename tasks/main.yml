@@ -1,8 +1,8 @@
 ---
-- name: Downloading serf binary from official repo.
+- name: Downloading serf binary from official repo to {{ inventory_hostname }}.
   get_url: url={{ serf_binary_link }} dest=/tmp/serf.zip
 
-- name: extract to /usr/local/bin/.
+- name: extract to /usr/local/bin/ in {{ inventory_hostname }}.
   unarchive:
     copy: no
     src: /tmp/serf.zip
