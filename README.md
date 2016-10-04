@@ -14,8 +14,8 @@ Role Variables
 --------------
 default variables: (can be changed while running playbook)
 
-unzip_version: "6.0*"
-serf_binary_link: "https://releases.hashicorp.com/serf/0.7.0/serf_0.7.0_linux_amd64.zip"
+1. unzip_version: "6.0*"
+2. serf_binary_link: "https://releases.hashicorp.com/serf/0.7.0/serf_0.7.0_linux_amd64.zip"
 
 Example Playbook
 ----------------
