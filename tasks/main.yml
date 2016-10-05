@@ -1,20 +1,22 @@
 ---
+- name: Install unzip
+  apt: pkg=unzip state=present
+
 - name: Downloading serf binary from official repo to {{ inventory_hostname }}.
-  get_url: url={{ serf_binary_link }} dest=/tmp/serf.zip
+  get_url: url={{ serf_binary_link }} dest=/tmp/serf.zip mode=0777
 
 - name: extract to /usr/local/bin/ in {{ inventory_hostname }}.
-  unarchive:
-    copy: no
-    src: /tmp/serf.zip
-    dest: /usr/local/bin/
-    owner: root
-    group: root
+  command: unzip /tmp/serf.zip -d /usr/local/bin/
+  async: 1
+
+- name: extract to /usr/local/bin/ in {{ inventory_hostname }}.
+  file: path=/usr/local/bin/serf mode=0655
 
 - name: Copying Events file to {{ inventory_hostname }}
   copy: src=files/event.sh dest=/tmp/
 
 - name: Run serf agent {{ inventory_hostname }}
-  command: serf agent -log-level=debug -event-handler=/tmp/event.sh
+  shell: nohup serf agent -log-level=debug -event-handler=/tmp/event.sh
   async: 1
 
 - name: Join a cluster to agent {{ inventory_hostname }}
